@@ -12,6 +12,20 @@ Un mini-sito **HTML autonomo** che riproduce un video **frame per frame mentre s
 
 ---
 
+## 🏆 Il più semplice — `scroll-player.html` (tutto-in-uno)
+
+**Il file che fa per te se non vuoi fare NIENTE**: apri e scorri, fine. 🎬
+
+- Il video è **già incorporato dentro** il file (base64) — niente `video.mp4` da caricare, niente selettori, niente configurazione.
+- **Un solo file**: scaricalo, salvalo su iPad, aprilo ovunque → funziona subito, anche offline.
+- Per rigenerarlo dopo aver cambiato `video.mp4`:
+
+```bash
+node build-single-file.js   # ricrea scroll-player.html con il nuovo video
+```
+
+---
+
 ## 🚀 Metodo 1 — `index.html` (consigliato, un solo file)
 
 1. Metti il tuo video nella **stessa cartella** di `index.html` con il nome **`video.mp4`**.
@@ -73,9 +87,11 @@ Apri `frames.html` e scorri. **Tieni sempre insieme `frames.html` e la cartella 
 ## 📁 Struttura
 
 ```
-├── index.html          ← player scroll (un solo file, video-based)
-├── extract-frames.sh   ← estrae i frame con ffmpeg
-├── frames.html         ← generato dallo script (variante a immagini)
-├── frames/             ← generata dallo script (frame_00001.jpg, …)
-└── video.mp4           ← il TUO video (da aggiungere)
+├── scroll-player.html   ← 🏆 TUTTO-IN-UNO: video incorporato, apri e scorri
+├── index.html           ← player scroll (video-based, usa video.mp4 accanto)
+├── build-single-file.js ← genera scroll-player.html con il video dentro
+├── extract-frames.sh    ← estrae i frame con ffmpeg
+├── frames.html          ← generato dallo script (variante a immagini)
+├── frames/              ← generata dallo script (frame_00001.jpg, …)
+└── video.mp4            ← il TUO video (da aggiungere)
 ```
