@@ -7,8 +7,8 @@ Un mini-sito **HTML autonomo** che riproduce un video **frame per frame mentre s
 ## ✨ Come funziona
 
 - Il video resta fisso sullo schermo mentre **scorri la pagina**: più scorri, più il video avanza.
-- Ogni "scatto" dello scorrimento corrisponde a **un fotogramma** (quantizzato a 30 fps di default, configurabile).
-- Comandi on-screen: ▶ play/pausa, ◀ ▶ per avanzare/indietreggiare di un frame, barra di avanzamento trascinabile, ⚙️ impostazioni.
+- Ogni "scatto" dello scorrimento corrisponde a **un fotogramma** (quantizzato al frame rate del video: 24 fps).
+- **Nessuna interfaccia**: solo il video a schermo intero, senza pulsanti, scritte o barre sopra.
 
 ---
 
@@ -31,18 +31,11 @@ node build-single-file.js   # ricrea scroll-player.html con il nuovo video
 1. Metti il tuo video nella **stessa cartella** di `index.html` con il nome **`video.mp4`**.
 2. Apri `index.html` nel browser (doppio click) e scorri. Il video si carica da solo.
 
-In alternativa, dentro la pagina puoi:
-- trascinare un video direttamente sulla finestra, oppure
-- premere **📂** e scegliere il file dal dispositivo, oppure
-- incollare un link diretto a un `.mp4`.
-
 ### Su iPad / iPhone
 
 1. Copia `index.html` e `video.mp4` in una cartella (anche tramite AirDrop o Files).
 2. Apri `index.html` dall'app **Files** → si apre in Safari.
 3. Scorri con il dito: il video avanza frame per frame. 🎉
-
-> 💡 Suggerimento: per sentire il controllo "a scatti", abbassa il valore **px/s** nelle impostazioni (⚙️), oppure attiva la modalità **"Per frame"** per decidere quanti pixel di scroll servono per ogni singolo fotogramma.
 
 ---
 
@@ -69,18 +62,9 @@ Apri `frames.html` e scorri. **Tieni sempre insieme `frames.html` e la cartella 
 
 ---
 
-## ⚙️ Impostazioni (in `index.html`)
+## 🧹 Nessuna interfaccia
 
-| Opzione | Descrizione |
-|---|---|
-| **Modalità** | `Per durata`: 350 px di scroll = 1 secondo di video. `Per frame`: scegli i pixel per ogni fotogramma. |
-| **Velocità** | Cursore per regolare la sensibilità dello scorrimento. |
-| **FPS** | Quantizzazione a 12/24/30/60 fps per l'effetto "a fotogrammi", o nessuna per uno scorrimento fluido. |
-
-### Tastiera
-- `Spazio` → play / pausa
-- `←` / `→` → frame precedente / successivo
-- `Home` / `End` → inizio / fine
+Tutte le versioni del sito mostrano **solo i frame del video**, senza scritte, pulsanti o barre sopra. La sensibilità dello scroll è fissa e ottimizzata per il video (350 px di scroll = 1 secondo di video, quantizzato a 24 fps).
 
 ---
 

@@ -8,239 +8,23 @@
 <meta name="mobile-web-app-capable" content="yes">
 <title>Scroll Video — riproduci col lo scorrimento</title>
 <style>
-  :root{
-    --hud-bg: rgba(13,16,22,.78);
-    --hud-border: rgba(255,255,255,.12);
-    --accent: #6ea8ff;
-    --text: #eef1f6;
-    --muted: #9aa3b2;
-  }
   *{box-sizing:border-box; margin:0; padding:0}
-  html,body{
-    background:#05070a; color:var(--text);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
+  html,body{background:#05070a; height:100%;}
   body{overscroll-behavior-y:none; touch-action:pan-y;}
 
-  /* -------- palcoscenico fisso -------- */
-  #stage{
-    position:fixed; inset:0; z-index:1;
-    display:flex; align-items:center; justify-content:center;
-    background:#05070a;
-  }
-  #screen{
-    width:100%; height:100%; display:block;
-    background:#05070a;
-  }
+  /* palcoscenico a schermo intero: solo il video */
+  #stage{position:fixed; inset:0; z-index:1; background:#05070a;}
+  #screen{width:100%; height:100%; display:block; background:#05070a;}
 
-  /* -------- placeholder (prima del video) -------- */
-  #placeholder{
-    position:absolute; inset:0; z-index:5;
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap:18px; text-align:center; padding:24px;
-    background:radial-gradient(120% 120% at 50% 0%, #0c1018 0%, #05070a 70%);
-  }
-  #placeholder.hidden{display:none}
-  #placeholder .big{font-size:52px; line-height:1}
-  #placeholder h1{font-size:clamp(20px,4.5vw,30px); font-weight:600}
-  #placeholder p{color:var(--muted); max-width:520px; font-size:15px; line-height:1.5}
-  #placeholder .drop{
-    border:2px dashed rgba(255,255,255,.22); border-radius:18px;
-    padding:34px 26px; width:min(480px,86vw);
-    display:flex; flex-direction:column; gap:14px; align-items:center;
-    transition:border-color .2s, background .2s;
-  }
-  #placeholder .drop.drag{ border-color:var(--accent); background:rgba(110,168,255,.08); }
-  .btn{
-    appearance:none; border:1px solid var(--hud-border); border-radius:12px;
-    background:var(--hud-bg); color:var(--text); padding:11px 18px;
-    font-size:14px; font-weight:600; cursor:pointer;
-    transition:background .15s, transform .05s;
-  }
-  .btn:hover{background:rgba(255,255,255,.12)}
-  .btn:active{transform:scale(.97)}
-  .btn.primary{background:var(--accent); border-color:var(--accent); color:#0a1420}
-  .urlrow{display:flex; gap:8px; width:100%}
-  .urlrow input{
-    flex:1; min-width:0; background:rgba(255,255,255,.07);
-    border:1px solid var(--hud-border); border-radius:10px; color:var(--text);
-    padding:11px 12px; font-size:14px; outline:none;
-  }
-  .urlrow input:focus{border-color:var(--accent)}
-
-  /* -------- HUD -------- */
-  .hud{
-    position:absolute; z-index:6; color:var(--text);
-    font-size:13px; user-select:none; -webkit-user-select:none;
-  }
-  #hint{
-    top:max(16px, env(safe-area-inset-top)); left:50%; transform:translateX(-50%);
-    background:var(--hud-bg); border:1px solid var(--hud-border);
-    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
-    padding:10px 18px; border-radius:999px; font-weight:600;
-    display:flex; align-items:center; gap:8px;
-    animation:pulse 2.6s ease-in-out infinite;
-    transition:opacity .5s;
-  }
-  #hint.hidden{opacity:0; pointer-events:none}
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
-
-  #tools{
-    top:max(16px, env(safe-area-inset-top)); right:16px;
-    display:flex; gap:8px;
-  }
-  .iconbtn{
-    appearance:none; border:1px solid var(--hud-border); border-radius:12px;
-    background:var(--hud-bg); color:var(--text); width:42px; height:42px;
-    font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;
-    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
-    transition:background .15s, transform .05s;
-  }
-  .iconbtn:hover{background:rgba(255,255,255,.14)}
-  .iconbtn:active{transform:scale(.94)}
-  .iconbtn.on{background:var(--accent); border-color:var(--accent); color:#0a1420}
-
-  #transport{
-    bottom:calc(64px + env(safe-area-inset-bottom)); left:50%; transform:translateX(-50%);
-    display:flex; gap:8px; align-items:center;
-  }
-  #playBtn{
-    width:54px; height:54px; border-radius:50%;
-    font-size:20px;
-  }
-  #stepBack,#stepFwd{width:40px; height:40px; border-radius:50%; font-size:15px}
-
-  #progWrap{
-    bottom:calc(24px + env(safe-area-inset-bottom)); left:50%; transform:translateX(-50%);
-    width:min(720px, calc(100vw - 32px));
-    display:flex; align-items:center; gap:12px;
-  }
-  #progBar{
-    flex:1; height:5px; border-radius:99px; background:rgba(255,255,255,.16);
-    cursor:pointer; position:relative; touch-action:none;
-  }
-  #progFill{
-    position:absolute; inset:0 auto 0 0; width:0%;
-    background:var(--accent); border-radius:99px;
-  }
-  #progKnob{
-    position:absolute; top:50%; left:0%; width:15px; height:15px; border-radius:50%;
-    background:#fff; transform:translate(-50%,-50%); box-shadow:0 1px 6px rgba(0,0,0,.5);
-  }
-  #info{
-    bottom:calc(20px + env(safe-area-inset-bottom)); right:16px;
-    font-variant-numeric:tabular-nums; color:var(--muted); text-align:right;
-    font-size:12px; line-height:1.5; pointer-events:none;
-  }
-  #info b{color:var(--text); font-size:13px}
-
-  /* -------- pannello impostazioni -------- */
-  #settings{
-    position:absolute; z-index:7; right:16px;
-    bottom:calc(72px + env(safe-area-inset-bottom));
-    width:min(300px, calc(100vw - 32px));
-    background:var(--hud-bg); border:1px solid var(--hud-border); border-radius:16px;
-    backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
-    padding:16px; display:none; flex-direction:column; gap:14px;
-    font-size:13px;
-  }
-  #settings.open{display:flex}
-  #settings h3{font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700}
-  .row{display:flex; flex-direction:column; gap:6px}
-  .row label{color:var(--muted); display:flex; justify-content:space-between; align-items:center}
-  .row label output{color:var(--text); font-variant-numeric:tabular-nums}
-  .row select{
-    background:rgba(255,255,255,.08); border:1px solid var(--hud-border);
-    border-radius:9px; color:var(--text); padding:9px 10px; font-size:13px; outline:none;
-  }
-  input[type=range]{
-    -webkit-appearance:none; appearance:none; width:100%; height:5px; border-radius:99px;
-    background:rgba(255,255,255,.18); outline:none;
-  }
-  input[type=range]::-webkit-slider-thumb{
-    -webkit-appearance:none; appearance:none; width:16px; height:16px; border-radius:50%;
-    background:var(--accent); cursor:pointer;
-  }
-  .note{color:var(--muted); font-size:12px; line-height:1.45}
-
-  /* -------- pista di scorrimento -------- */
+  /* pista di scorrimento (invisibile) */
   #track{width:1px; height:100vh; pointer-events:none;}
-
-  @media (max-width:640px){
-    #info{font-size:11px}
-    #transport{bottom:calc(58px + env(safe-area-inset-bottom))}
-  }
 </style>
 </head>
 <body>
 
-  <!-- palcoscenico -->
+  <!-- palcoscenico: solo il video, a schermo intero -->
   <div id="stage">
     <canvas id="screen"></canvas>
-
-    <!-- stato iniziale / nessun video -->
-    <div id="placeholder">
-      <div class="big">🎞️</div>
-      <h1>Riproduci il video con lo scorrimento</h1>
-      <p>Scorri la pagina (rotella, trackpad o dito su iPad) e il video avanzerà <b>frame per frame</b>.</p>
-      <div class="drop" id="drop">
-        <div>Trascina qui un video, oppure</div>
-        <button class="btn primary" id="pickBtn">📂 Scegli un video</button>
-        <input type="file" id="file" accept="video/*" hidden>
-        <div class="urlrow">
-          <input type="url" id="url" placeholder="… oppure incolla un link al video (mp4)">
-          <button class="btn" id="urlBtn">OK</button>
-        </div>
-      </div>
-      <p>💡 Metti il video come <code>video.mp4</code> nella stessa cartella di questo file: verrà caricato da solo.</p>
-    </div>
-
-    <!-- HUD -->
-    <div class="hud" id="hint">⬇️ Scorri per riprodurre</div>
-
-    <div class="hud" id="tools">
-      <button class="iconbtn" id="loadBtn" title="Carica video">📂</button>
-      <button class="iconbtn" id="settingsBtn" title="Impostazioni">⚙️</button>
-    </div>
-
-    <div class="hud" id="transport">
-      <button class="iconbtn" id="stepBack" title="Frame precedente">◀</button>
-      <button class="iconbtn" id="playBtn" title="Play / Pausa">▶</button>
-      <button class="iconbtn" id="stepFwd" title="Frame successivo">▶</button>
-    </div>
-
-    <div class="hud" id="progWrap">
-      <div id="progBar"><div id="progFill"></div><div id="progKnob"></div></div>
-    </div>
-
-    <div class="hud" id="info"><b>—</b><br>—</div>
-
-    <div id="settings">
-      <h3>Impostazioni</h3>
-      <div class="row">
-        <label for="mode">Modalità di scorrimento</label>
-        <select id="mode">
-          <option value="time">⏱️ Per durata (px al secondo)</option>
-          <option value="frame">🎞️ Per frame (px per frame)</option>
-        </select>
-      </div>
-      <div class="row">
-        <label for="speed">Velocità <output id="speedVal"></output></label>
-        <input type="range" id="speed" min="50" max="1200" step="10" value="350">
-      </div>
-      <div class="row">
-        <label for="fps">Fotogrammi al secondo (quantizzazione)</label>
-        <select id="fps">
-          <option value="0">Nessuna (fluido)</option>
-          <option value="12">12 fps</option>
-          <option value="24" selected>24 fps</option>
-          <option value="30">30 fps</option>
-          <option value="60">60 fps</option>
-        </select>
-      </div>
-      <div class="note">Tocca <b>⟲</b> con i tasti Home/Inizio per tornare all'inizio. Usa le frecce ← → per avanzare di un frame alla volta.</div>
-    </div>
   </div>
 
   <!-- pista: più è lunga, più scroll serve per completare il video -->
@@ -256,24 +40,11 @@
   var track  = $('#track');
   var ctx    = canvas.getContext('2d');
 
-  var placeholder = $('#placeholder');
-  var hint        = $('#hint');
-  var info        = $('#info');
-  var progBar     = $('#progBar');
-  var progFill    = $('#progFill');
-  var progKnob    = $('#progKnob');
-  var playBtn     = $('#playBtn');
-
   // ---------- stato ----------
   var state = {
-    mode: 'time',        // 'time' | 'frame'
-    pxPerSec: 350,
-    pxPerFrame: 20,
-    fps: 24,
-    quantize: true,
-    playing: false,
-    ready: false,
-    hintDone: false
+    pxPerSec: 350,   // pixel di scroll per 1 secondo di video
+    fps: 24,         // frame rate del video (quantizzazione)
+    quantize: true
   };
 
   var video = document.createElement('video');
@@ -285,14 +56,6 @@
 
   // ---------- util ----------
   function clamp(v,a,b){ return Math.min(b, Math.max(a, v)); }
-  function totalFrames(){ return Math.round((video.duration||0) * state.fps); }
-  function currentFrame(){ return Math.round(video.currentTime * state.fps); }
-  function fmtTime(t){
-    if (!isFinite(t)) t = 0;
-    var m = Math.floor(t/60), s = Math.floor(t%60), cs = Math.floor((t*100)%100);
-    return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')+'.'+String(cs).padStart(2,'0');
-  }
-
   function progress(){
     var max = track.offsetHeight - window.innerHeight;
     if (max <= 0) return 0;
@@ -303,10 +66,7 @@
   function setTrackHeight(){
     var d = video.duration;
     if (!isFinite(d) || !d) return;
-    var h;
-    if (state.mode === 'time') h = d * state.pxPerSec;
-    else h = Math.round(d * state.fps) * state.pxPerFrame;
-    track.style.height = Math.max(Math.ceil(h), window.innerHeight*2) + 'px';
+    track.style.height = Math.max(Math.ceil(d * state.pxPerSec), window.innerHeight*2) + 'px';
   }
 
   // ---------- rendering ----------
@@ -339,24 +99,10 @@
     if (Math.abs(video.currentTime - t) > 1e-4) video.currentTime = t;
   }
 
-  function syncToScroll(){
+  document.addEventListener('scroll', function(){
     applyTime(progress() * video.duration);
-  }
-
-  function onScroll(){
-    if (state.playing) return;
-    syncToScroll();
-    updateHud();
-    hideHint();
-  }
-  document.addEventListener('scroll', onScroll, {passive:true});
+  }, {passive:true});
   window.addEventListener('resize', resizeCanvas);
-
-  function hideHint(){
-    if (state.hintDone) return;
-    state.hintDone = true;
-    hint.classList.add('hidden');
-  }
 
   // ---------- sblocco iOS (play+pausa al primo tocco) ----------
   var unlocked = false;
@@ -367,208 +113,33 @@
     try { p = video.play(); } catch(e){ return; }
     if (p && p.then){ p.then(function(){ video.pause(); }).catch(function(){}); }
   }
-  ['touchstart','scroll','pointerdown','keydown'].forEach(function(ev){
+  ['touchstart','scroll','pointerdown'].forEach(function(ev){
     document.addEventListener(ev, unlock, {passive:true});
   });
 
-  // ---------- HUD ----------
-  function setPlayBtn(on){
-    playBtn.textContent = on ? '⏸' : '▶';
-    playBtn.classList.toggle('on', on);
-  }
-
-  function updateHud(){
-    var d = video.duration || 0;
-    var tf = totalFrames();
-    var cf = currentFrame();
-    var p = state.playing ? (d ? video.currentTime/d : 0) : progress();
-    progFill.style.width  = (p*100) + '%';
-    progKnob.style.left   = (p*100) + '%';
-    if (state.ready){
-      info.innerHTML = '<b>Frame ' + String(cf).padStart(4,'0') + ' / ' + tf +
-        '</b><br>' + fmtTime(video.currentTime) + ' / ' + fmtTime(d);
-    }
-  }
-
   // ---------- caricamento ----------
-  function showPlaceholder(show){
-    placeholder.classList.toggle('hidden', !show);
-  }
   function loadUrl(url){
-    state.ready = false;
-    showPlaceholder(false);
     video.src = url;
     video.load();
   }
 
   function tryAutoLoad(){
-    // tenta un video.mp4 accanto al file (utile su iPad/cartella locale)
+    // tenta un video.mp4 accanto al file
     var probe = document.createElement('video');
     probe.preload = 'metadata';
     probe.src = 'video.mp4';
     probe.addEventListener('loadedmetadata', function(){
       loadUrl('video.mp4');
     }, {once:true});
-    probe.addEventListener('error', function(){
-      showPlaceholder(true);
-    }, {once:true});
   }
 
   video.addEventListener('loadedmetadata', function(){
-    state.ready = true;
     setTrackHeight();
     resizeCanvas();
-    updateHud();
   });
   video.addEventListener('durationchange', setTrackHeight);
   video.addEventListener('loadeddata', draw);
-  video.addEventListener('seeked', function(){ draw(); updateHud(); });
-
-  // ---------- play / pausa ----------
-  function togglePlay(){
-    if (!state.ready) return;
-    if (state.playing){
-      video.pause();
-      state.playing = false;
-      setPlayBtn(false);
-      syncToScroll();
-      updateHud();
-    } else {
-      unlock();
-      state.playing = true;
-      setPlayBtn(true);
-      hideHint();
-      var p = video.play();
-      if (p && p.catch) p.catch(function(){ state.playing=false; setPlayBtn(false); });
-      loop();
-    }
-  }
-  video.addEventListener('ended', function(){
-    state.playing = false; setPlayBtn(false);
-  });
-
-  function loop(){
-    if (!state.playing) return;
-    draw();
-    updateHud();
-    requestAnimationFrame(loop);
-  }
-
-  function stepFrame(delta){
-    if (!state.ready) return;
-    unlock();
-    hideHint();
-    if (state.playing){ video.pause(); state.playing=false; setPlayBtn(false); }
-    var t = clamp(video.currentTime + delta/state.fps, 0, (video.duration||0) - 0.001);
-    applyTime(t);
-    // riporta lo scroll in linea con il tempo scelto
-    var max = track.offsetHeight - window.innerHeight;
-    if (max > 0){
-      var p = (video.duration && isFinite(video.duration)) ? (t / video.duration) : 0;
-      window.scrollTo({top: p*max, behavior:'auto'});
-    }
-    updateHud();
-  }
-
-  // ---------- barra di avanzamento (clic / trascina) ----------
-  var dragging = false;
-  function setProgressFromEvent(e){
-    var r = progBar.getBoundingClientRect();
-    var p = clamp((e.clientX - r.left)/r.width, 0, 1);
-    var max = track.offsetHeight - window.innerHeight;
-    window.scrollTo({top: p*max, behavior:'auto'});
-    applyTime(p * (video.duration||0));
-    updateHud();
-  }
-  progBar.addEventListener('pointerdown', function(e){
-    dragging = true;
-    progBar.setPointerCapture(e.pointerId);
-    setProgressFromEvent(e);
-  });
-  progBar.addEventListener('pointermove', function(e){ if (dragging) setProgressFromEvent(e); });
-  progBar.addEventListener('pointerup',   function(e){ dragging = false; });
-  progBar.addEventListener('pointercancel', function(){ dragging = false; });
-
-  // ---------- controlli ----------
-  playBtn.addEventListener('click', togglePlay);
-  $('#stepBack').addEventListener('click', function(){ stepFrame(-1); });
-  $('#stepFwd').addEventListener('click',  function(){ stepFrame( 1); });
-
-  $('#loadBtn').addEventListener('click', function(){ $('#file').click(); });
-  $('#pickBtn').addEventListener('click', function(){ $('#file').click(); });
-  $('#file').addEventListener('change', function(){
-    if (this.files && this.files[0]){
-      loadUrl(URL.createObjectURL(this.files[0]));
-    }
-  });
-  $('#urlBtn').addEventListener('click', function(){
-    var u = $('#url').value.trim();
-    if (u) loadUrl(u);
-  });
-  $('#url').addEventListener('keydown', function(e){ if (e.key==='Enter') $('#urlBtn').click(); });
-
-  // trascina e rilascia
-  var drop = $('#drop');
-  ['dragenter','dragover'].forEach(function(ev){
-    drop.addEventListener(ev, function(e){ e.preventDefault(); drop.classList.add('drag'); });
-  });
-  ['dragleave','drop'].forEach(function(ev){
-    drop.addEventListener(ev, function(e){ e.preventDefault(); drop.classList.remove('drag'); });
-  });
-  drop.addEventListener('drop', function(e){
-    var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
-    if (f && f.type.indexOf('video/') === 0) loadUrl(URL.createObjectURL(f));
-  });
-
-  // ---------- impostazioni ----------
-  var settings = $('#settings');
-  var speedEl = $('#speed'), speedVal = $('#speedVal'), modeEl = $('#mode'), fpsEl = $('#fps');
-
-  $('#settingsBtn').addEventListener('click', function(){
-    settings.classList.toggle('open');
-  });
-
-  function refreshSpeedLabel(){
-    var v = state.mode === 'time' ? state.pxPerSec : state.pxPerFrame;
-    speedEl.value = v;
-    speedVal.textContent = (state.mode === 'time' ? v + ' px/s' : v + ' px/frame');
-  }
-  modeEl.addEventListener('change', function(){
-    state.mode = modeEl.value;
-    // range del cursore in base alla modalità
-    if (state.mode === 'frame'){
-      speedEl.min = 2; speedEl.max = 200; speedEl.step = 1; speedEl.value = state.pxPerFrame;
-    } else {
-      speedEl.min = 50; speedEl.max = 1200; speedEl.step = 10; speedEl.value = state.pxPerSec;
-    }
-    refreshSpeedLabel();
-    setTrackHeight();
-  });
-  speedEl.addEventListener('input', function(){
-    var v = parseInt(speedEl.value, 10);
-    if (state.mode === 'time') state.pxPerSec = v; else state.pxPerFrame = v;
-    refreshSpeedLabel();
-    setTrackHeight();
-  });
-  fpsEl.addEventListener('change', function(){
-    var v = parseInt(fpsEl.value, 10);
-    state.fps = v > 0 ? v : 24;
-    state.quantize = v > 0;
-    setTrackHeight();
-    updateHud();
-  });
-  refreshSpeedLabel();
-
-  // ---------- tastiera ----------
-  document.addEventListener('keydown', function(e){
-    var tag = (e.target.tagName||'').toLowerCase();
-    if (tag === 'input' || tag === 'select' || tag === 'textarea') return;
-    if (e.key === ' '){ e.preventDefault(); togglePlay(); }
-    else if (e.key === 'ArrowRight'){ e.preventDefault(); stepFrame( 1); }
-    else if (e.key === 'ArrowLeft'){  e.preventDefault(); stepFrame(-1); }
-    else if (e.key === 'Home'){ e.preventDefault(); window.scrollTo({top:0, behavior:'smooth'}); }
-    else if (e.key === 'End'){ e.preventDefault(); window.scrollTo({top:document.body.scrollHeight, behavior:'smooth'}); }
-  });
+  video.addEventListener('seeked', draw);
 
   // ---------- avvio ----------
   resizeCanvas();

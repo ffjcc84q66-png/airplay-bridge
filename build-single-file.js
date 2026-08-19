@@ -53,9 +53,6 @@ if (!html.includes(MARK)) {
 }
 html = html.replace(MARK, NEW);
 
-// 3) Nascondi il pannello "carica video" (qui non serve: il video è già dentro)
-html = html.replace('<div id="placeholder">', '<div id="placeholder" class="hidden">');
-
 // 4) Salva
 fs.writeFileSync(OUT, html);
 const outMB = (fs.statSync(OUT).size / 1048576).toFixed(1);
