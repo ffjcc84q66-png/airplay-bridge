@@ -1,0 +1,6 @@
+# File rigenerabili con extract-frames.sh
+frames/
+frames.html
+
+# macOS
+.DS_Store
