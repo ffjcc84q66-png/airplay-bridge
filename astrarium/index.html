@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Astrarium — Osservatori del cielo buio | Dolomiti, Etna, Sardegna</title>
+<meta name="description" content="Esperienze di osservazione del cielo in tre osservatori certificati sotto i cieli più bui d'Italia. Notti, astrofotografia, scuole. Società Benefit dal 2021.">
+<meta property="og:title" content="Astrarium — Il cielo che abbiamo perso">
+<meta property="og:description" content="Tre osservatori sotto i cieli più bui d'Italia. Dolomiti, Etna, Sardegna.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23050810'/%3E%3Cpath d='M16 4 L18 13 L27 16 L18 19 L16 28 L14 19 L5 16 L14 13 Z' fill='%234FD8C4'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ============ NAVIGAZIONE ============ -->
+<nav id="nav">
+  <a href="#" class="brand" aria-label="Astrarium — home">
+    <svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <circle cx="16" cy="16" r="14.5" stroke="#4FD8C4" stroke-width="1" opacity="0.5"/>
+      <path d="M16 5 L17.8 13.5 L26 16 L17.8 18.5 L16 27 L14.2 18.5 L6 16 L14.2 13.5 Z" fill="#F5F2EA"/>
+      <circle cx="24" cy="8" r="1.4" fill="#F2B441"/>
+    </svg>
+    ASTRARIUM
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#problema">Il problema</a></li>
+    <li><a href="#storia">Storia</a></li>
+    <li><a href="#osservatori">Osservatori</a></li>
+    <li><a href="#esperienze">Esperienze</a></li>
+    <li><a href="#cielo">Cielo di stanotte</a></li>
+    <li><a href="#persone">Persone</a></li>
+    <li><a href="#cielobuio">Cielo buio</a></li>
+    <li><a href="#contatti" class="btn btn-lanterna btn-small">Prenota la tua notte</a></li>
+  </ul>
+  <button class="menu-btn" id="menuBtn" aria-label="Apri menu">☰</button>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <canvas id="heroStars" aria-hidden="true"></canvas>
+  <div class="hero-horizon" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Società Benefit · 3 osservatori · 14 comuni per il cielo buio
+    </div>
+    <h1>Il cielo che abbiamo <em>perso</em>,<br>in tre luoghi dove si ritrova.</h1>
+    <p class="lead">Il 70% degli italiani non ha mai visto la Via Lattea ad occhio nudo. Noi portiamo le persone sotto gli ultimi cieli davvero bui del paese — e le difendiamo, comune dopo comune.</p>
+    <div class="hero-actions">
+      <a href="#esperienze" class="btn btn-lanterna">Prenota la tua notte</a>
+      <a href="#osservatori" class="btn btn-ghost">Scopri i cieli</a>
+    </div>
+  </div>
+  <div class="hero-meta">
+    <span class="coords">46°33′N 12°17′E — 1.850 m s.l.m.</span>
+    <span>Prossima serata osservativa: stanotte, se il cielo è sereno</span>
+  </div>
+</header>
+
+<!-- ============ IL PROBLEMA ============ -->
+<section class="section" id="problema">
+  <div class="container">
+    <div class="problem-grid">
+      <div class="reveal">
+        <span class="eyebrow">Il problema</span>
+        <h2>Abbiamo spento le stelle senza accorgercene.</h2>
+        <p class="lead" style="margin-top:1.2rem;">L'inquinamento luminoso cresce del 2% ogni anno. Non è solo un problema per gli astronomi: altera gli ecosistemi notturni, disturba il sonno, spreca energia. E ci ha tolto qualcosa che credevamo eterno.</p>
+        <p style="color:var(--stella);margin-top:1rem;max-width:620px;">La buona notizia: è il tipo di inquinamento più facile da eliminare. Una lampada schermata torna a illuminare solo dove serve. Il buio, a differenza di altro, si recupera in una notte.</p>
+      </div>
+      <div class="problem-stats reveal reveal-d1">
+        <div class="pstat">
+          <div class="num" data-count="70" data-suffix="%">0</div>
+          <div class="lbl">degli italiani non ha mai visto la Via Lattea ad occhio nudo</div>
+        </div>
+        <div class="pstat">
+          <div class="num" data-count="99" data-suffix="%">0</div>
+          <div class="lbl">della popolazione europea vive sotto cieli inquinati dalla luce</div>
+        </div>
+        <div class="pstat">
+          <div class="num" data-count="2" data-suffix="%/anno">0</div>
+          <div class="lbl">di crescita dell'inquinamento luminoso, misurato da satellite</div>
+        </div>
+        <div class="pstat">
+          <div class="num" data-count="30" data-suffix="%">0</div>
+          <div class="lbl">dell'illuminazione pubblica italiana è luce dispersa verso l'alto: sprecata</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bortle-demo reveal">
+      <div class="bortle-canvas-wrap">
+        <canvas id="bortleCanvas"></canvas>
+      </div>
+      <div class="bortle-info">
+        <div class="bortle-label">
+          <strong id="bortleLabel">Bortle 2 — Cielo veramente buio</strong><br>
+          <span id="bortleDesc">Il Col dei Fioi è qui. M31 visibile a occhio nudo.</span>
+        </div>
+        <input type="range" min="0" max="4" value="1" step="1" class="bortle-slider" id="bortleSlider" aria-label="Simulazione della qualità del cielo (scala Bortle)">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STORIA ============ -->
+<section class="section section-alt" id="storia">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">La nostra storia</span>
+      <h2>Tutto è iniziato con una domanda.</h2>
+      <p>Novembre 2016, San Vito di Cadore. Una bambina di otto anni alza gli occhi verso la Via Lattea e chiede: «Ma il cielo è sempre così? Perché a casa non l'ho mai visto?»</p>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-item reveal">
+        <div class="tl-year">2016</div>
+        <h3>La domanda</h3>
+        <p>Elena Moretti, astrofisica, accompagna turisti in una serata di osservazione. La domanda di una bambina diventa il seme di tutto: i cieli bui esistono, ma sono privi di strutture, accessibilità e narrazione.</p>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-year">2017</div>
+        <h3>La fondazione</h3>
+        <p>Il 14 luglio — notte di Perseidi in anticipo — Elena fonda Astrarium con Marco Turrini, Giulia Sanna e Pietro Alba. Capitale iniziale: € 380.000. Primo ufficio: una stanza sopra il panificio del paese.</p>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-year">2018</div>
+        <h3>Il primo osservatorio</h3>
+        <p>Nasce l'Osservatorio del Col dei Fioi: cupola di 6 metri, legno locale, un riflettore da 600 mm, 18 posti letto. Prima stagione: 2.800 visitatori. Chiusura in perdita, passaparola straordinario.</p>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-year">2019–2020</div>
+        <h3>Riconoscimenti e pandemia</h3>
+        <p>Il Premio Nazionale per la Divulgazione Scientifica, poi otto mesi di chiusura. Astrarium sopravvive reinventandosi: webinar, kit "Cielo da casa", corsi online. 1.200 partecipanti. Scopre di avere una community, non solo clienti.</p>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-year">2021</div>
+        <h3>Società Benefit + Etna</h3>
+        <p>La conversione in Società Benefit: il profitto serve alla missione, non il contrario. Apre l'Osservatorio dell'Etna Nord, in partnership con l'INGV. Primo bilancio in utile: € 96.000.</p>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-year">2022–2023</div>
+        <h3>La Carta del Cielo Buio</h3>
+        <p>Il progetto che ci definisce: un protocollo con cui i comuni riducono l'inquinamento luminoso. 9 comuni firmatari, 1.400 ettari tutelati, Premio Nazionale Innovazione Ambientale.</p>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-year">2024</div>
+        <h3>Il Golgo</h3>
+        <p>Apre il terzo osservatorio, in Sardegna sul plateau di Baunei: Bortle 1, tra i cieli più bui d'Italia, accanto ai nuraghi. Archeoastronomia e scienza insieme: i cieli degli antichi, spiegati con i dati di oggi.</p>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-year">2025</div>
+        <h3>Oggi</h3>
+        <p>42.000 visitatori, 34 persone, tre osservatori, 14 comuni nella Carta del Cielo Buio, 6.400 studenti all'anno. Il sogno di una bambina è diventato un'azienda che esiste perché nessun bambino debba più fare quella domanda.</p>
+      </div>
+    </div>
+
+    <blockquote class="storia-quote reveal">
+      Il cielo è sempre stato così. Siamo noi che abbiamo imparato a non vederlo.
+      <cite>— Elena Moretti, "Il cielo che abbiamo perso", 2022</cite>
+    </blockquote>
+  </div>
+</section>
+
+<!-- ============ OSSERVATORI ============ -->
+<section class="section" id="osservatori">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">I luoghi</span>
+      <h2>Tre osservatori, tre cieli.</h2>
+      <p>Ogni struttura nasce dal dialogo con il territorio: legno locale, personale del posto, cieli certificati. Le cupole sono a piano terra e accessibili a tutti.</p>
+    </div>
+
+    <div class="obs-grid">
+      <article class="obs-card reveal">
+        <div class="obs-visual">
+          <canvas data-seed="7"></canvas>
+          <span class="obs-alt">1.850 m s.l.m.</span>
+        </div>
+        <div class="obs-body">
+          <h3>Col dei Fioi</h3>
+          <div class="obs-region">Dolomiti · San Vito di Cadore (BL)</div>
+          <p>La sede principale, dal 2018. Sopra Cortina, tra abeti e pascoli: il cielo che ha visto nascere Astrarium. 180 notti serene all'anno.</p>
+          <dl class="obs-specs">
+            <div><dt>Strumento</dt><dd>Riflettore 600 mm</dd></div>
+            <div><dt>Qualità cielo</dt><dd><span class="bortle-badge">◆ Bortle 2</span></dd></div>
+            <div><dt>Capienza</dt><dd>60 persone · 18 posti letto</dd></div>
+            <div><dt>Aperto da</dt><dd>2018</dd></div>
+          </dl>
+        </div>
+      </article>
+
+      <article class="obs-card reveal reveal-d1">
+        <div class="obs-visual">
+          <canvas data-seed="13"></canvas>
+          <span class="obs-alt">2.000 m s.l.m.</span>
+        </div>
+        <div class="obs-body">
+          <h3>Etna Nord</h3>
+          <div class="obs-region">Sicilia · Linguaglossa (CT)</div>
+          <p>L'osservatorio dei due fuochi: il Sole di giorno con filtro H-alpha, i cieli sopra il vulcano di notte. In partnership con l'INGV.</p>
+          <dl class="obs-specs">
+            <div><dt>Strumenti</dt><dd>Solare H-alpha + 500 mm</dd></div>
+            <div><dt>Qualità cielo</dt><dd><span class="bortle-badge">◆ Bortle 2–3</span></dd></div>
+            <div><dt>Capienza</dt><dd>40 persone · 12 posti letto</dd></div>
+            <div><dt>Aperto da</dt><dd>2021</dd></div>
+          </dl>
+        </div>
+      </article>
+
+      <article class="obs-card reveal reveal-d2">
+        <div class="obs-visual">
+          <canvas data-seed="21"></canvas>
+          <span class="obs-alt">780 m s.l.m.</span>
+        </div>
+        <div class="obs-body">
+          <h3>Golgo</h3>
+          <div class="obs-region">Sardegna · Baunei (OG)</div>
+          <p>Il cielo più buio che abbiamo: Bortle 1 sull'altopiano basaltico, tra nuraghi e domus de janas. Dove gli antichi guardavano le stesse stelle.</p>
+          <dl class="obs-specs">
+            <div><dt>Strumenti</dt><dd>Riflettore 500 mm + campo astrofoto</dd></div>
+            <div><dt>Qualità cielo</dt><dd><span class="bortle-badge">◆ Bortle 1</span></dd></div>
+            <div><dt>Capienza</dt><dd>36 persone · 12 posti letto</dd></div>
+            <div><dt>Aperto da</dt><dd>2024</dd></div>
+          </dl>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ESPERIENZE ============ -->
+<section class="section section-alt" id="esperienze">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Le esperienze</span>
+      <h2>Quattro modi di guardare in alto.</h2>
+      <p>Prezzi visibili, capienze limitate, nessun prerequisito. Il 78% dei nostri ospiti non aveva mai guardato in un telescopio prima di arrivare qui.</p>
+    </div>
+
+    <div class="exp-tabs reveal" role="tablist">
+      <button class="exp-tab active" data-panel="panel-prima" role="tab">Prima Notte</button>
+      <button class="exp-tab" data-panel="panel-profondita" role="tab">Profondità</button>
+      <button class="exp-tab" data-panel="panel-scuole" role="tab">Scuole</button>
+      <button class="exp-tab" data-panel="panel-ospitalita" role="tab">Case del Cielo</button>
+    </div>
+
+    <div class="exp-panel active" id="panel-prima">
+      <div class="exp-grid">
+        <article class="exp-card">
+          <div class="exp-tag">Esperienza serale</div>
+          <h3>Sotto le Stelle</h3>
+          <p>Orientamento a occhio nudo, costellazioni della stagione, osservazione al telescopio: Luna, pianeti, oggetti del profondo cielo. Il racconto del cielo con una guida.</p>
+          <div class="exp-meta">
+            <span>◷ 2,5 ore</span>
+            <span>👥 max 40</span>
+            <span>🧣 coperta e tè inclusi</span>
+          </div>
+          <div class="exp-foot">
+            <div class="exp-price">€ 38 <small>/ adulto</small></div>
+            <a href="#contatti" class="btn btn-ghost btn-small">Prenota</a>
+          </div>
+        </article>
+        <article class="exp-card">
+          <div class="exp-tag">Esperienza diurna · solo Etna</div>
+          <h3>Il Sole da Vicino</h3>
+          <p>Il Sole osservato in sicurezza con filtro H-alpha: macchie, protuberanze, il ciclo di attività spiegato da chi lo studia. Un'ora e mezza che cambia il modo di vedere il giorno.</p>
+          <div class="exp-meta">
+            <span>◷ 1,5 ore</span>
+            <span>👥 max 40</span>
+            <span>☀️ filtro H-alpha</span>
+          </div>
+          <div class="exp-foot">
+            <div class="exp-price">€ 24 <small>/ adulto</small></div>
+            <a href="#contatti" class="btn btn-ghost btn-small">Prenota</a>
+          </div>
+        </article>
+        <article class="exp-card">
+          <div class="exp-tag">Regalo</div>
+          <h3>La Stella Cadente</h3>
+          <p>La gift card di Astrarium: valida 18 mesi su qualsiasi esperienza, nessun sovrapprezzo. Si compra online, arriva via email in un minuto. Per chi vuoi accendere una stella?</p>
+          <div class="exp-meta">
+            <span>◷ valida 18 mesi</span>
+            <span>✉️ via email</span>
+            <span>🔄 trasferibile</span>
+          </div>
+          <div class="exp-foot">
+            <div class="exp-price">da € 24</div>
+            <a href="#contatti" class="btn btn-ghost btn-small">Regala</a>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div class="exp-panel" id="panel-profondita">
+      <div class="exp-grid">
+        <article class="exp-card">
+          <div class="exp-tag">Notte profonda</div>
+          <h3>Notte di Osservazione</h3>
+          <p>Dalle 22:00 alle 3:00: sessione al telescopio principale, oggetti selezionati dalla guida in base alla notte reale, uso del cercatore di comete. Pausa con vin brulé e dolci locali.</p>
+          <div class="exp-meta">
+            <span>◷ 5 ore</span>
+            <span>👥 max 16</span>
+            <span>🔭 telescopio principale</span>
+          </div>
+          <div class="exp-foot">
+            <div class="exp-price">€ 85</div>
+            <a href="#contatti" class="btn btn-ghost btn-small">Prenota</a>
+          </div>
+        </article>
+        <article class="exp-card">
+          <div class="exp-tag">Weekend · 2 giorni</div>
+          <h3>Workshop di Astrofotografia</h3>
+          <p>Teoria e setup il primo giorno, riprese guidate la prima notte, elaborazione il secondo giorno, seconda notte in autonomia con assistenza. Include 2 notti in Casa del Cielo.</p>
+          <div class="exp-meta">
+            <span>◷ 2 giorni</span>
+            <span>👥 max 12</span>
+            <span>🛏️ 2 notti incluse</span>
+          </div>
+          <div class="exp-foot">
+            <div class="exp-price">€ 290</div>
+            <a href="#contatti" class="btn btn-ghost btn-small">Prenota</a>
+          </div>
+        </article>
+        <article class="exp-card">
+          <div class="exp-tag">Ritiro · 7 giorni</div>
+          <h3>Sette Notti</h3>
+          <p>Il ritiro più richiesto: una settimana immersa nel cielo. Lezioni mattutine, osservazioni ogni notte serena, incontro con un ricercatore INAF, escursione notturna, elaborazione finale. Lista d'attesa media: 4 mesi.</p>
+          <div class="exp-meta">
+            <span>◷ 7 giorni</span>
+            <span>👥 max 10</span>
+            <span>🍽️ tutto compreso</span>
+          </div>
+          <div class="exp-foot">
+            <div class="exp-price">€ 1.450</div>
+            <a href="#contatti" class="btn btn-ghost btn-small">Candidati</a>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div class="exp-panel" id="panel-scuole">
+      <div class="exp-grid">
+        <article class="exp-card">
+          <div class="exp-tag">Programma annuale</div>
+          <h3>Un Cielo per Crescere</h3>
+          <p>Percorso per primarie e secondarie: due incontri in classe più una notte in osservatorio. 118 classi adese nel 2025/26. Ogni percorso si chiude con il "diario di bordo celeste" della classe.</p>
+          <div class="exp-meta">
+            <span>◷ anno scolastico</span>
+            <span>👥 118 classi</span>
+            <span>📓 diario celeste</span>
+          </div>
+          <div class="exp-foot">
+            <div class="exp-price">€ 45 <small>/ studente</small></div>
+            <a href="#contatti" class="btn btn-ghost btn-small">Adesioni</a>
+          </div>
+        </article>
+        <article class="exp-card">
+          <div class="exp-tag">Gratuito · 24 borse</div>
+          <h3>Residenza Scientifica</h3>
+          <p>Sei giorni a luglio per studenti eccellenti degli ultimi due anni di superiori: un piccolo progetto di ricerca reale, con dati raccolti in loco. Le relazioni finali vengono pubblicate. Finanziata da sponsor e 5×1000.</p>
+          <div class="exp-meta">
+            <span>◷ 6 giorni · luglio</span>
+            <span>👥 24 borse</span>
+            <span>🔬 progetto reale</span>
+          </div>
+          <div class="exp-foot">
+            <div class="exp-price">Gratuito</div>
+            <a href="#contatti" class="btn btn-ghost btn-small">Candidati</a>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div class="exp-panel" id="panel-ospitalita">
+      <div class="exp-grid">
+        <article class="exp-card">
+          <div class="exp-tag">Col dei Fioi · 18 posti</div>
+          <h3>Casa del Cielo — Dolomiti</h3>
+          <p>Legno di filiera corta, terrazza panoramica, biblioteca astronomica con 400 volumi. Sveglia "a cielo aperto": se la notte è serena, ti bussiamo alla porta.</p>
+          <div class="exp-meta">
+            <span>🛏️ 18 posti</span>
+            <span>📚 biblioteca</span>
+            <span>🌅 terrazza</span>
+          </div>
+          <div class="exp-foot">
+            <div class="exp-price">da € 95 <small>/ notte</small></div>
+            <a href="#contatti" class="btn btn-ghost btn-small">Prenota</a>
+          </div>
+        </article>
+        <article class="exp-card">
+          <div class="exp-tag">Etna Nord · 12 posti</div>
+          <h3>Casa del Cielo — Etna</h3>
+          <p>Sala comune con camino, colazione con granita e brioche siciliane, il profumo dei pini della Nebrodi. Riscaldamento a biomassa, luce interna a spettro caldo.</p>
+          <div class="exp-meta">
+            <span>🛏️ 12 posti</span>
+            <span>🔥 camino</span>
+            <span>🍋 colazione siciliana</span>
+          </div>
+          <div class="exp-foot">
+            <div class="exp-price">da € 85 <small>/ notte</small></div>
+            <a href="#contatti" class="btn btn-ghost btn-small">Prenota</a>
+          </div>
+        </article>
+        <article class="exp-card">
+          <div class="exp-tag">Golgo · 12 posti</div>
+          <h3>Casa del Cielo — Golgo</h3>
+          <p>Cortile interno, forno a legna, fitodepurazione. Il silenzio del Supramonte: nessuna luce artificiale entro 8 km. Il buio più profondo in cui abbia mai dormito.</p>
+          <div class="exp-meta">
+            <span>🛏️ 12 posti</span>
+            <span>🍕 forno a legna</span>
+            <span>🌑 buio totale</span>
+          </div>
+          <div class="exp-foot">
+            <div class="exp-price">da € 85 <small>/ notte</small></div>
+            <a href="#contatti" class="btn btn-ghost btn-small">Prenota</a>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <p class="exp-note reveal">E se la notte è nuvolosa? L'esperienza diventa "Notte di Nuvole": planetario digitale, laboratorio di meteoriti, racconto del cielo al chiuso — con il 30% di sconto sul prossimo acquisto. Oppure rimborso totale fino a 24 ore prima. Il cielo non si prenota: noi sì.</p>
+  </div>
+</section>
+
+<!-- ============ CIELO DI STANOTTE ============ -->
+<section class="section" id="cielo">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Adesso</span>
+      <h2>Il cielo di stanotte, sopra le nostre cupole.</h2>
+      <p>Questa mappa è calcolata in tempo reale: posizioni reali di stelle e oggetti del profondo cielo, per l'orario di adesso e per l'osservatorio che scegli.</p>
+    </div>
+
+    <div class="sky-widget reveal">
+      <div class="sky-head">
+        <div class="sky-title">Mappa celeste · <strong id="skySiteName">aggiornata al minuto</strong></div>
+        <select class="sky-select" id="obsSelect" aria-label="Scegli l'osservatorio">
+          <option value="fioi">Col dei Fioi — Dolomiti</option>
+          <option value="etna">Etna Nord — Sicilia</option>
+          <option value="golgo">Golgo — Sardegna</option>
+        </select>
+      </div>
+      <div class="sky-body">
+        <div class="sky-chart-wrap">
+          <canvas id="skyChart"></canvas>
+          <div class="sky-legend">
+            <div><i style="background:#F5F2EA"></i> Stelle</div>
+            <div><i style="background:#F2B441"></i> Oggetti del profondo cielo</div>
+          </div>
+        </div>
+        <div class="sky-list" id="skyList"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PERSONE ============ -->
+<section class="section section-alt" id="persone">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Le persone</span>
+      <h2>Chi ti accompagnerà sotto le stelle.</h2>
+      <p>Le guide seguono sei mesi di percorso interno prima di condurre un gruppo da sole: 200 ore di affiancamento, esame di astronomia di posizione, prova didattica. Il turnover è del 4% annuo.</p>
+    </div>
+
+    <div class="team-grid">
+      <article class="person reveal">
+        <div class="person-avatar" style="background:linear-gradient(135deg,#4FD8C4,#2a9d8f)">EM</div>
+        <div>
+          <h3>Elena Moretti</h3>
+          <div class="role">Direttore Scientifico</div>
+          <p>Astrofisica (PhD, Padova). Dodici anni di ricerca sulla formazione stellare, poi la divulgazione. Autrice de "Il cielo che abbiamo perso" (2022, 40.000 copie).</p>
+          <blockquote>«Se una guida dice una cosa imprecisa a un visitatore, è un fallimento di tutto il sistema che ho costruito.»</blockquote>
+        </div>
+      </article>
+      <article class="person reveal reveal-d1">
+        <div class="person-avatar" style="background:linear-gradient(135deg,#F2B441,#e07a5f)">PA</div>
+        <div>
+          <h3>Pietro Alba</h3>
+          <div class="role">Amministratore Delegato</div>
+          <p>Cadorino, terza generazione di albergatori. Quindici anni di hotel a Cortina prima di credere nel progetto. Porta il territorio, i fornitori, le istituzioni.</p>
+          <blockquote>«Il cielo buio è la nostra materia prima. Va protetto come si protegge un bosco.»</blockquote>
+        </div>
+      </article>
+      <article class="person reveal">
+        <div class="person-avatar" style="background:linear-gradient(135deg,#8B93A7,#4a5568)">MT</div>
+        <div>
+          <h3>Marco Turrini</h3>
+          <div class="role">Direttore Tecnico</div>
+          <p>Ingegnere ottico. Ha progettato e collaudato gli strumenti di tutti e tre gli osservatori. Manutenzione, upgrade, gestione dei dati.</p>
+          <blockquote>«Un telescopio mal collimato è una bugia che dici agli ospiti.»</blockquote>
+        </div>
+      </article>
+      <article class="person reveal reveal-d1">
+        <div class="person-avatar" style="background:linear-gradient(135deg,#4FD8C4,#3a86ff)">GS</div>
+        <div>
+          <h3>Giulia Sanna</h3>
+          <div class="role">Responsabile Progetti e Sviluppo</div>
+          <p>Architetta sarda specializzata in strutture low-impact. Ha disegnato le Case del Cielo e guidato il progetto del Golgo. Supervisiona la sostenibilità.</p>
+          <blockquote>«Ogni struttura che costruiamo deve poter essere smontata senza lasciare traccia.»</blockquote>
+        </div>
+      </article>
+    </div>
+
+    <div class="team-stats reveal">
+      <div class="tstat"><div class="num" data-count="34">0</div><div class="lbl">persone in squadra</div></div>
+      <div class="tstat"><div class="num" data-count="9">0</div><div class="lbl">astronomi e guide certificate</div></div>
+      <div class="tstat"><div class="num" data-count="61" data-suffix="%">0</div><div class="lbl">vive entro 30 km dal lavoro</div></div>
+      <div class="tstat"><div class="num" data-count="4" data-suffix="%">0</div><div class="lbl">turnover annuo</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CARTA DEL CIELO BUIO ============ -->
+<section class="section" id="cielobuio">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Impatto</span>
+      <h2>La Carta del Cielo Buio.</h2>
+      <p>Il nostro progetto principale per la tutela attiva: un protocollo in cinque punti che i comuni sottoscrivono per ridurre l'inquinamento luminoso. Il buio, comune per comune.</p>
+    </div>
+
+    <div class="impact-grid">
+      <div class="impact-card reveal">
+        <div class="num" data-count="14">0</div>
+        <div class="lbl">comuni firmatari della Carta</div>
+      </div>
+      <div class="impact-card reveal reveal-d1">
+        <div class="num" data-count="2900">0</div>
+        <div class="lbl">ettari con illuminazione ridotta</div>
+      </div>
+      <div class="impact-card reveal reveal-d2">
+        <div class="num" data-count="1850">0</div>
+        <div class="lbl">MWh/anno di energia risparmiata</div>
+      </div>
+      <div class="impact-card reveal reveal-d3">
+        <div class="num" data-count="780">0</div>
+        <div class="lbl">tonnellate di CO₂ evitate ogni anno</div>
+      </div>
+    </div>
+
+    <div class="carta-split">
+      <div class="reveal">
+        <h3 style="margin-bottom:0.5rem">I cinque punti della Carta</h3>
+        <p style="color:var(--stella);font-size:0.95rem">Ogni comune che sottoscrive si impegna a:</p>
+        <ul class="carta-points">
+          <li><span class="n">1</span><span><strong>Inventario</strong> completo dell'illuminazione pubblica esistente</span></li>
+          <li><span class="n">2</span><span><strong>Temperatura colore massima 3000K</strong> — luce calda per tutti i nuovi impianti</span></li>
+          <li><span class="n">3</span><span><strong>Schermatura totale:</strong> nessun flusso sopra l'orizzonte</span></li>
+          <li><span class="n">4</span><span><strong>Orari ridotti:</strong> spegnimento o riduzione al 50% tra le 24:00 e le 5:00 nelle aree non residenziali</span></li>
+          <li><span class="n">5</span><span><strong>Monitoraggio annuale</strong> della qualità del cielo con misuratori SQM</span></li>
+        </ul>
+      </div>
+
+      <div class="comuni-box reveal reveal-d1">
+        <h3>I comuni della Carta</h3>
+        <div class="comuni-tags">
+          <span>San Vito di Cadore</span><span>Borca di Cadore</span><span>Vodo di Cadore</span>
+          <span>Val di Zoldo</span><span>Linguaglossa</span><span>Piedimonte Etneo</span>
+          <span>Sant'Alfio</span><span>Baunei</span><span>Seui</span><span>Ulassai</span>
+          <span>Osini</span><span>Gairo</span><span>Jerzu</span><span>Tertenia</span>
+        </div>
+        <h3 style="margin-bottom:0.8rem">Bilancio Benefit 2025 — sintesi</h3>
+        <table class="bilancio">
+          <thead>
+            <tr><th>Area</th><th>Obiettivo</th><th>Risultato</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Comuni in Carta</td><td>12</td><td>14</td><td class="ok">✓</td></tr>
+            <tr><td>Studenti coinvolti</td><td>6.000</td><td>6.400</td><td class="ok">✓</td></tr>
+            <tr><td>CO₂ strutture</td><td>−5%</td><td>−7%</td><td class="ok">✓</td></tr>
+            <tr><td>Personale locale</td><td>55%</td><td>61%</td><td class="ok">✓</td></tr>
+            <tr><td>Serate LIS</td><td>30</td><td>36</td><td class="ok">✓</td></tr>
+            <tr><td>Donne in ruoli apicali</td><td>45%</td><td>50%</td><td class="ok">✓</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="premi">
+      <div class="premio reveal"><div class="y">2019</div><div class="t">Premio Nazionale per la Divulgazione Scientifica</div></div>
+      <div class="premio reveal reveal-d1"><div class="y">2023</div><div class="t">Premio Nazionale Innovazione Ambientale</div></div>
+      <div class="premio reveal reveal-d2"><div class="y">2024</div><div class="t">Certificazione "Dark Sky Friendly" — IDA sezione europea</div></div>
+      <div class="premio reveal reveal-d3"><div class="y">2025</div><div class="t">Best Practice UNWTO per il turismo scientifico</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIANZE ============ -->
+<section class="section section-alt" id="voci">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Le voci</span>
+      <h2>Cosa raccontano gli ospiti.</h2>
+      <p>4,9/5 su 1.847 recensioni verificate. Il 68% degli ospiti torna entro tre anni.</p>
+    </div>
+
+    <div class="testi-grid">
+      <article class="testi reveal">
+        <div class="stars">★★★★★</div>
+        <blockquote>Sono venuta per fare un regalo a mio padre e ho pianto quando è comparso l'anello di Saturno. La guida ha aspettato che tutti avessero visto, senza fretta, come se fossimo noi l'evento della serata.</blockquote>
+        <div class="testi-who">
+          <div class="avatar" style="background:#4FD8C4">CF</div>
+          <div><div class="name">Chiara F.</div><div class="role">Col dei Fioi, marzo 2025</div></div>
+        </div>
+      </article>
+      <article class="testi reveal reveal-d1">
+        <div class="stars">★★★★★</div>
+        <blockquote>Al Golgo ho visto la Via Lattea per la prima volta a 41 anni. Non sapevo che proiettasse ombra. Ho ripensato a tutte le notti passate sotto lo stesso cielo senza vederlo.</blockquote>
+        <div class="testi-who">
+          <div class="avatar" style="background:#F2B441">MR</div>
+          <div><div class="name">Matteo R.</div><div class="role">Golgo, agosto 2025</div></div>
+        </div>
+      </article>
+      <article class="testi reveal reveal-d2">
+        <div class="stars">★★★★★</div>
+        <blockquote>Portai la mia classe di terza media. Sei mesi dopo, durante l'interrogazione di scienze, una studentessa ha spiegato la parallasse meglio del libro di testo. Era stata alla notte in osservatorio.</blockquote>
+        <div class="testi-who">
+          <div class="avatar" style="background:#8B93A7">LB</div>
+          <div><div class="name">Laura B.</div><div class="role">Insegnante, programma scolastico</div></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="section" id="faq">
+  <div class="container">
+    <div class="section-head reveal" style="margin-left:auto;margin-right:auto;text-align:center;max-width:640px">
+      <span class="eyebrow" style="justify-content:center">Domande</span>
+      <h2>Quello che ci chiedono sempre.</h2>
+    </div>
+
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <button class="faq-q">E se la notte è nuvolosa?<span class="chev">▾</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Il cielo non si prenota. Se la serata non è osservabile, l'esperienza si trasforma in <strong>Notte di Nuvole</strong>: planetario digitale, laboratorio di meteoriti, racconto del cielo al chiuso — con il 30% di sconto sul prossimo acquisto. Se preferisci, rimborso totale fino a 24 ore prima.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Cosa devo indossare?<span class="chev">▾</span></button>
+        <div class="faq-a"><div class="faq-a-inner">D'estate come d'inverno: <strong>più strati</strong>. A 1.850 m la notte è fredda anche in luglio (si scende sotto i 10°C). Scarpe chiuse, giacca antivento. Noi forniamo coperte di lana e tè caldo.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Posso portare i bambini?<span class="chev">▾</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Sì, da 6 anni in su per "Sotto le Stelle". Da 0 a 5 anni solo nelle serate <strong>Famiglie sotto le stelle</strong> (orario ridotto, 21:00–23:00). I minori di 14 anni hanno il 42% di sconto.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Posso fotografare?<span class="chev">▾</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Con lo smartphone: sì, e ti insegniamo il modo (modalità notturna, treppiede). Con reflex: sì nelle esperienze "Profondità". Astrofotografia guidata: solo nei workshop dedicati.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Devo sapere qualcosa di astronomia?<span class="chev">▾</span></button>
+        <div class="faq-a"><div class="faq-a-inner">No. Il 78% dei nostri ospiti non ha mai guardato in un telescopio prima. Le guide partono da zero e non c'è domanda sbagliata.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Come si raggiunge l'osservatorio?<span class="chev">▾</span></button>
+        <div class="faq-a"><div class="faq-a-inner"><strong>Col dei Fioi:</strong> navetta elettrica da San Vito di Cadore (inclusa), 15 minuti. <strong>Etna Nord:</strong> navetta da Linguaglossa (inclusa), 25 minuti. <strong>Golgo:</strong> strada privata da Baunei, auto o navetta su prenotazione.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Siete accessibili a persone con disabilità?<span class="chev">▾</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Sì. Cupole a piano terra, oculari con inclinazione regolabile, percorsi tattili. 12 serate all'anno con interpretariato LIS. Contattaci per organizzare al meglio la tua visita.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Posso regalare un'esperienza?<span class="chev">▾</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Sì, con la <strong>Stella Cadente</strong> (gift card): valida 18 mesi, su qualsiasi esperienza, nessun sovrapprezzo. Si compra online e si riceve via email in un minuto.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTATTI ============ -->
+<section class="section section-alt" id="contatti">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Contatti</span>
+      <h2>Prenota la tua notte.</h2>
+      <p>La prima consulenza è gratuita e senza impegno. Rispondiamo entro 24 ore — tranne il lunedì, che dedichiamo alla manutenzione dei telescopi.</p>
+    </div>
+
+    <div class="contact-split">
+      <form class="form-grid reveal" id="contactForm" novalidate>
+        <div class="form-row">
+          <div class="field">
+            <label for="fName">Nome e cognome *</label>
+            <input type="text" id="fName" name="name" required autocomplete="name">
+            <div class="err">Ci serve questo campo per risponderti.</div>
+          </div>
+          <div class="field">
+            <label for="fEmail">Email *</label>
+            <input type="email" id="fEmail" name="email" required autocomplete="email">
+            <div class="err">Ci serve un indirizzo email valido.</div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="fObs">Osservatorio</label>
+            <select id="fObs" name="observatory">
+              <option>Col dei Fioi — Dolomiti</option>
+              <option>Etna Nord — Sicilia</option>
+              <option>Golgo — Sardegna</option>
+              <option>Non lo so ancora, consigliatemi voi</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="fExp">Esperienza</label>
+            <select id="fExp" name="experience">
+              <option>Sotto le Stelle</option>
+              <option>Il Sole da Vicino</option>
+              <option>Notte di Osservazione</option>
+              <option>Workshop di Astrofotografia</option>
+              <option>Sette Notti</option>
+              <option>Programma scolastico</option>
+              <option>Solo perneggio in Casa del Cielo</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="fMsg">Raccontaci *</label>
+          <textarea id="fMsg" name="message" required placeholder="Chi sei, con chi vieni, cosa vorresti vedere nel cielo…"></textarea>
+          <div class="err">Ci serve questo campo per risponderti.</div>
+        </div>
+        <div>
+          <button type="submit" class="btn btn-lanterna">Invia la richiesta</button>
+        </div>
+      </form>
+
+      <div class="contact-info reveal reveal-d1">
+        <div class="cinfo">
+          <h3>Numero verde prenotazioni</h3>
+          <div class="big">800 123 456</div>
+          <p>9:00–18:00, tutti i giorni</p>
+        </div>
+        <div class="cinfo">
+          <h3>Email</h3>
+          <a href="mailto:ciao@astrarium.it">ciao@astrarium.it</a>
+          <p>Risposta entro 24 ore</p>
+        </div>
+        <div class="cinfo">
+          <h3>Dove siamo</h3>
+          <p><strong>Col dei Fioi</strong> — Via del Cielo 3, 32043 San Vito di Cadore (BL) · +39 0439 123 456</p>
+          <p><strong>Etna Nord</strong> — Contrada Ragabo, 95015 Linguaglossa (CT) · +39 095 123 456</p>
+          <p><strong>Golgo</strong> — Località Golgo, 08020 Baunei (OG) · +39 0782 123 456</p>
+        </div>
+        <div class="newsletter-box">
+          <h3>L'Almanacco</h3>
+          <p>Una email al mese: cosa vedere nel cielo del mese, appuntamenti e storie. Esce a ogni luna nuova.</p>
+          <form class="nl-form" id="nlForm" novalidate>
+            <input type="email" placeholder="la-tua@email.it" aria-label="Email per l'Almanacco">
+            <button type="submit">Iscrivimi</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="brand">
+          <svg width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <circle cx="16" cy="16" r="14.5" stroke="#4FD8C4" stroke-width="1" opacity="0.5"/>
+            <path d="M16 5 L17.8 13.5 L26 16 L17.8 18.5 L16 27 L14.2 18.5 L6 16 L14.2 13.5 Z" fill="#F5F2EA"/>
+          </svg>
+          ASTRARIUM
+        </a>
+        <p>Società Benefit dal 2021. Restituiamo il cielo alle persone, una notte alla volta.</p>
+      </div>
+      <div>
+        <h4>Esperienze</h4>
+        <ul>
+          <li><a href="#esperienze">Sotto le Stelle</a></li>
+          <li><a href="#esperienze">Notte di Osservazione</a></li>
+          <li><a href="#esperienze">Astrofotografia</a></li>
+          <li><a href="#esperienze">Sette Notti</a></li>
+          <li><a href="#esperienze">Scuole</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Azienda</h4>
+        <ul>
+          <li><a href="#storia">La nostra storia</a></li>
+          <li><a href="#persone">Le persone</a></li>
+          <li><a href="#cielobuio">Carta del Cielo Buio</a></li>
+          <li><a href="#cielobuio">Bilancio Benefit</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Osservatori</h4>
+        <ul>
+          <li><a href="#osservatori">Col dei Fioi — Dolomiti</a></li>
+          <li><a href="#osservatori">Etna Nord — Sicilia</a></li>
+          <li><a href="#osservatori">Golgo — Sardegna</a></li>
+          <li><a href="#cielo">Il cielo di stanotte</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year">2026</span> Astrarium Società Benefit S.p.A. — Via del Cielo 3, 32043 San Vito di Cadore (BL) · P.IVA 01234567890 · REA BL-123456</span>
+      <span>Il cielo non si prenota. Noi sì.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="js/main.js"></script>
+</body>
+</html>
